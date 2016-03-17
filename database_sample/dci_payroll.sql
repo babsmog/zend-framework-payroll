@@ -16,7 +16,8 @@ create table if not exists Personnel(
   age int unsigned not null,
   address int unsigned not null,
   gender char not null,
-  primary key(personnel_id)
+  primary key(personnel_id),
+  foreign key(address) references Address(addr_id) on delete cascade on update cascade
 );
 
 create table if not exists Task(
