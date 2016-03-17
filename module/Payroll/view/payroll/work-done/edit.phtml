@@ -1,0 +1,56 @@
+<?php
+
+$title = 'Edit work done';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form->setAttribute('action',$this->url('work-done',
+  array(
+    'action' => 'edit',
+    'id' => $this->id,
+  )
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formHidden($form->get('work_id'));
+?>
+
+<div class='form-group'>
+<label>Personnel - Task</label>
+<br/>
+<?php
+echo $this->formSelect($form->get('personnel_task_id'));
+?>
+</div>
+
+<div class='form-group'>
+<label>Date</label>
+<br/>
+<?php
+echo $this->formDateSelect($form->get('date_done'), IntlDateFormatter::LONG, 'en_US');
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formRow($form->get('hrs_worked'));
+?>
+</div>
+
+<div class='form-group'>
+<label>Location</label>
+<br/>
+<?php
+echo $this->formSelect($form->get('location_id'));
+?>
+</div>
+
+
+<?php
+echo $this->formSubmit($form->get('submit'));
+
+echo $this->form()->closeTag();

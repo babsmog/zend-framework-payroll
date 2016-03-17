@@ -1,0 +1,74 @@
+<?php
+
+$title = 'Edit personnel info';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form->setAttribute('action',$this->url('personnel',
+  array(
+    'action' => 'edit',
+    'id' => $this->id,
+  )
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formHidden($form->get('personnel_id'));
+?>
+
+<div class='form-group'>
+<?php
+echo $this->formRow($form->get('fname'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formRow($form->get('lname'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formRow($form->get('age'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formRow($form->get('street_name'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formRow($form->get('community'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formRow($form->get('parish'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formSelect($form->get('gender'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formSubmit($form->get('submit'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->form()->closeTag();
+?>
+</div>

@@ -1,0 +1,42 @@
+<?php
+
+$title = 'Assign new task to personnel';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form->setAttribute('action',$this->url('personnel-task',array('action' => 'add')));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formHidden($form->get('personnel_task_id'));
+?>
+
+<div class='form-group'>
+<label>Personnel</label>
+<br/>
+<?php
+echo $this->formSelect($form->get('personnel_id'));
+?>
+</div>
+
+<div class='form-group'>
+<label>Task</label>
+<br/>
+<?php
+echo $this->formSelect($form->get('task_id'));
+?>
+</div>
+
+<div class='form-group'>
+<?php
+echo $this->formRow($form->get('rate'));
+?>
+</div>
+
+<?php
+echo $this->formSubmit($form->get('submit'));
+
+echo $this->form()->closeTag();

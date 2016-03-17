@@ -1,0 +1,30 @@
+<?php
+
+$title = 'Addresses';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+  <a class="btn btn-success" href="<?php echo $this->url('address',array('action'=>'add'));?>">Add new address</a>
+</p>
+
+<table class="table">
+  <tr>
+    <th>Street Name</th>
+    <th>Community</th>
+    <th>Parish</th>
+    <th>&nbsp;</th>
+  </tr>
+  <?php foreach ($addresses as $address) : ?>
+  <tr>
+    <td><?php echo $this->escapeHtml($address->streetName);?></td>
+    <td><?php echo $this->escapeHtml($address->community);?></td>
+    <td><?php echo $this->escapeHtml($address->parish);?></td>
+    <td>
+      <a class="btn btn-primary" href="<?php echo $this->url('address',array('action' => 'edit','id' => $address->addressId));?>">Edit</a>
+      <a class="btn btn-danger" href="<?php echo $this->url('address',array('action' => 'delete','id' => $address->addressId));?>">Delete</a>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>

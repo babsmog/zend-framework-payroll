@@ -1,0 +1,26 @@
+<?php
+
+$title = 'Locations';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+  <a class="btn btn-success" href="<?php echo $this->url('location',array('action'=>'add'));?>">Add new location</a>
+</p>
+
+<table class="table">
+  <tr>
+    <th>Location Name</th>
+    <th>&nbsp;</th>
+  </tr>
+  <?php foreach ($locations as $location) : ?>
+  <tr>
+    <td><?php echo $this->escapeHtml($location->locationName);?></td>
+    <td>
+      <a class="btn btn-primary" href="<?php echo $this->url('location',array('action' => 'edit','id' => $location->locationId));?>">Edit</a>
+      <a class="btn btn-danger" href="<?php echo $this->url('location',array('action' => 'delete','id' => $location->locationId));?>">Delete</a>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>

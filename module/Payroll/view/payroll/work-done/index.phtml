@@ -1,0 +1,50 @@
+<?php
+
+$title = 'Work done by various personnel';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<div class="row">
+<p class="col-sm-3" >
+  <a class="btn btn-success" href="<?php echo $this->url('work-done',array('action'=>'add'));?>">Log a task done by a personnel</a>
+</p>
+<p class="col-sm-3" ></p>
+<p class="col-sm-3" ></p>
+<p class="col-sm-3" >
+  <a class="btn btn-info" href="<?php echo $this->url('work-done',array('action'=>'calculate'));?>">Calculate Pay Checks</a>
+</p>
+</div>
+
+
+<table class="table">
+  <tr>
+    <th>Id :: Personnel - Task(rate)</th>
+    <th>Date Completed</th>
+    <th>Period</th>
+    <th>Hours Worked</th>
+    <th>Location</th>
+    <th>Year</th>
+    <th>&nbsp;</th>
+  </tr>
+  <?php foreach ($works as $work) :
+    $personnelTask = $personnelTaskTable->getPersonnelTask($work->personnelTaskId);
+    $personnel = $personnelTable->getPersonnel($personnelTask->personnelId);
+    $task = $taskTable->getTask($personnelTask->taskId);
+    $location = $locationTable->getLocation($work->locationId);
+    ?>
+  <tr>
+    <td><?php echo $this->escapeHtml($personnel->personnelId.' :: '.$personnel->fName.' '.$personnel->lName.' - '.$task->taskName.'($'.$personnelTask->rate.')');?></td>
+    <td><?php echo $this->escapeHtml($work->dateDone);?></td>
+    <td><?php echo $this->escapeHtml($work->period);?></td>
+    <td><?php echo $this->escapeHtml($work->hoursWorked);?></td>
+    <td><?php echo $this->escapeHtml($location->locationName);?></td>
+    <td><?php echo $this->escapeHtml($work->year);?></td>
+    <td>
+      <a class="btn btn-primary" href="<?php echo $this->url('work-done',array('action' => 'edit','id' => $work->workId));?>">Edit</a>
+      <a class="btn btn-danger" href="<?php echo $this->url('work-done',array('action' => 'delete','id' => $work->workId));?>">Delete</a>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>

@@ -1,0 +1,35 @@
+<?php
+
+$title = 'Tasks assigned to various personnel';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p >
+  <a class="btn btn-success" href="<?php echo $this->url('personnel-task',array('action'=>'add'));?>">Assign a new task to a personnel</a>
+</p>
+
+
+<table class="table">
+  <tr>
+    <th>Personnel</th>
+    <th>Task</th>
+    <th>Rate</th>
+    <th>&nbsp;</th>
+  </tr>
+  <?php foreach ($personnelTasks as $personnelTask) :
+    $personnel = $personnelTable->getPersonnel($personnelTask->personnelId);
+    $task = $taskTable->getTask($personnelTask->taskId);
+    ?>
+  <tr>
+    <td><?php echo $this->escapeHtml($personnel->personnelId.' :: '.$personnel->fName.' '.$personnel->lName);?></td>
+    <td><?php echo $this->escapeHtml($task->taskName);?></td>
+    <td><?php echo $this->escapeHtml('$'.$personnelTask->rate);?></td>
+    <td>
+      <a class="btn btn-primary" href="<?php echo $this->url('personnel-task',array('action' => 'edit','id' => $personnelTask->personnelTaskId));?>">Edit</a>
+      <a class="btn btn-danger" href="<?php echo $this->url('personnel-task',array('action' => 'delete','id' => $personnelTask->personnelTaskId));?>">Delete</a>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>

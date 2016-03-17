@@ -1,0 +1,32 @@
+<?php
+
+$title = 'Pay Checks';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+
+<table class="table">
+  <tr>
+    <th>Id :: Personnel</th>
+    <th>Amount</th>
+    <th>Period</th>
+    <th>Year</th>
+    <th>&nbsp;</th>
+  </tr>
+  <?php foreach ($pays as $pay) :
+    $personnel = $personnelTable->getPersonnel($pay->personnelId);
+    ?>
+  <tr>
+    <td><?php echo $this->escapeHtml($personnel->personnelId.' :: '.$personnel->fName.' '.$personnel->lName);?></td>
+    <td><?php echo $this->escapeHtml('$'.$pay->amount);?></td>
+    <td><?php echo $this->escapeHtml($pay->period);?></td>
+    <td><?php echo $this->escapeHtml($pay->year);?></td>
+    <td>
+      <a class="btn btn-primary" href="<?php echo $this->url('pay',array('action' => 'print','id' => $pay->payId));?>">Print</a>
+      <a class="btn btn-danger" href="<?php echo $this->url('pay',array('action' => 'delete','id' => $pay->payId));?>">Delete</a>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>

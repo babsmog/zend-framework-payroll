@@ -1,0 +1,26 @@
+<?php
+
+$title = 'Tasks';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+  <a class="btn btn-success" href="<?php echo $this->url('task',array('action'=>'add'));?>">Add new task</a>
+</p>
+
+<table class="table">
+  <tr>
+    <th>Task Name</th>
+    <th>&nbsp;</th>
+  </tr>
+  <?php foreach ($tasks as $task) : ?>
+  <tr>
+    <td><?php echo $this->escapeHtml($task->taskName);?></td>
+    <td>
+      <a class="btn btn-primary" href="<?php echo $this->url('task',array('action' => 'edit','id' => $task->taskId));?>">Edit</a>
+      <a class="btn btn-danger" href="<?php echo $this->url('task',array('action' => 'delete','id' => $task->taskId));?>">Delete</a>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>
