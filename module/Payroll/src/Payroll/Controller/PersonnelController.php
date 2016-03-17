@@ -125,6 +125,9 @@ class PersonnelController extends AbstractActionController
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         $personnel->personnelId = $id;
+
+
+
         $this->getPersonnelTable()->savePersonnel($personnel);
 
         return $this->redirect()->toRoute('personnel',array(

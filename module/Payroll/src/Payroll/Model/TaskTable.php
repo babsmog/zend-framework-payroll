@@ -43,6 +43,8 @@ class TaskTable
 
   public function saveTask(Task $task)
   {
+    $task->taskName = ucwords(strtolower(preg_replace("!\s+!",' ',$task->taskName)));
+
     $data = array(
       'task_name' => $task->taskName,
     );

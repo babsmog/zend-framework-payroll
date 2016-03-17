@@ -41,9 +41,9 @@ class AddressTable
 
   public function getAddress2($street_name,$community,$parish)
   {
-    $street_name = ucwords(strtolower(preg_replace("\s+",' ',$street_name)));
-    $community = ucwords(strtolower(preg_replace("\s+",' ',$community)));
-    $parish = ucwords(strtolower(preg_replace("\s+",' ',$parish)));
+    $street_name = ucwords(strtolower(preg_replace("!\s+!",' ',$street_name)));
+    $community = ucwords(strtolower(preg_replace("!\s+!",' ',$community)));
+    $parish = ucwords(strtolower(preg_replace("!\s+!",' ',$parish)));
 
     $rowset = $this->tableGateway->select(array('street_name' => $street_name,'community' => $community, 'parish' => $parish));
     $row = $rowset->current();
@@ -55,6 +55,10 @@ class AddressTable
 
   public function saveAddress(Address $address)
   {
+    $address->streetName = ucwords(strtolower(preg_replace("!\s+!",' ',$address->streetName)));
+    $address->community = ucwords(strtolower(preg_replace("!\s+!",' ',$address->community)));
+    $address->parish = ucwords(strtolower(preg_replace("!\s+!",' ',$address->parish)));
+
     $data = array(
       'street_name' => $address->streetName,
       'community' => $address->community,

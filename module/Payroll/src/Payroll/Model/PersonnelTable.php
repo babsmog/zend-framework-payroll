@@ -32,6 +32,10 @@ class PersonnelTable
 
   public function savePersonnel(Personnel $personnel)
   {
+
+    $personnel->fName = ucwords(strtolower(preg_replace("!\s+!",' ',$personnel->fName)));
+    $personnel->lName = ucwords(strtolower(preg_replace("!\s+!",' ',$personnel->lName)));
+
     $data = array(
       'fname' => $personnel->fName,
       'lname' => $personnel->lName,

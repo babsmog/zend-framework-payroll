@@ -43,6 +43,8 @@ class LocationTable
 
   public function saveLocation(Location $location)
   {
+    $location->locationName = ucwords(strtolower(preg_replace("!\s+!",' ',$location->locationName)));
+
     $data = array(
       'location_name' => $location->locationName,
     );
