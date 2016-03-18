@@ -1,40 +1,25 @@
-ZendSkeletonApplication
-=======================
+Zend Payroll Application
+========================
 
-Introduction
-------------
-This is a simple, skeleton application using the ZF2 MVC layer and module
-systems. This application is meant to be used as a starting place for those
-looking to get their feet wet with ZF2.
+Description
+-----------
+This project is a basic payroll application that is built ontop of Zend Framework 2 (ZF2) skeleton application
+using the ZF2 MVC layer and module systems.It allows one to add numerous personnel and tasks (jobs) available to these personnel. Various task can then be assigned to individual personnel with different rates, or many personnel can be assigned to the same task. The application then allows the user to enter the work done for a task by a specific personnel; this includes the hours worked, the date the work was done, the location the work was done at (for off-site jobs) and the period
+in which the work was done. A period in the context of this application is defined as a fortnight starting from January 1 of each year with a total of 27 periods per year. From the work done a list of payrolls are calculated for the last period.
+That is the period prior to the current one which is dependent on the current date.
 
-Installation using Composer
----------------------------
+SetUp
+-----
+To get a working copy locally on your machine simply git clone the repository or download the zip file.
+install composer and navigate to the directory containing the project where you may run:
 
-The easiest way to create a new ZF2 project is to use [Composer](https://getcomposer.org/). If you don't have it already installed, then please install as per the [documentation](https://getcomposer.org/doc/00-intro.md).
+    composer install
 
+This should install the dependencies (ZF2) in the composer.json file.
+Then proceed to run the application with document root in public/ and directory index as index.php using the server of
+your chose. The instructions below might help you if you use apache or nginx or php's commandline server.
 
-Create your new ZF2 project:
-
-    composer create-project -n -sdev zendframework/skeleton-application path/to/install
-
-
-
-### Installation using a tarball with a local Composer
-
-If you don't have composer installed globally then another way to create a new ZF2 project is to download the tarball and install it:
-
-1. Download the [tarball](https://github.com/zendframework/ZendSkeletonApplication/tarball/master), extract it and then install the dependencies with a locally installed Composer:
-
-        cd my/project/dir
-        curl -#L https://github.com/zendframework/ZendSkeletonApplication/tarball/master | tar xz --strip-components=1
-    
-
-2. Download composer into your project directory and install the dependencies:
-
-        curl -s https://getcomposer.org/installer | php
-        php composer.phar install
-
-If you don't have access to curl, then install Composer into your project as per the [documentation](https://getcomposer.org/doc/00-intro.md).
+Use [Composer](https://getcomposer.org/). If you don't have it already installed, then please install as per the [documentation](https://getcomposer.org/doc/00-intro.md).
 
 Web server setup
 ----------------
