@@ -8,6 +8,11 @@ using the ZF2 MVC layer and module systems.It allows one to add numerous personn
 in which the work was done. A period in the context of this application is defined as a fortnight starting from January 1 of each year with a total of 27 periods per year. From the work done a list of payrolls are calculated for the last period.
 That is the period prior to the current one which is dependent on the current date.
 
+Home Page of the Application
+----------------------------
+
+![Alt text](/screenshot.png?raw=true "Home Page")
+
 SetUp
 -----
 To get a working copy locally on your machine simply git clone the repository or download the zip file.
