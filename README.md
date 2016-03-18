@@ -16,7 +16,7 @@ install composer and navigate to the directory containing the project where you 
     composer install
 
 This should install the dependencies (ZF2) in the composer.json file.
-Then proceed to run the application with document root in public/index.php using the server of
+Then proceed to run the application with document root in public/ and directory index as index.php using the server of
 your chose. The instructions below might help you if you use apache or nginx or php's commandline server.
 
 Use [Composer](https://getcomposer.org/). If you don't have it already installed, then please install as per the [documentation](https://getcomposer.org/doc/00-intro.md).
