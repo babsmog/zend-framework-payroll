@@ -28,6 +28,19 @@ your chose. The instructions below might help you if you use apache or nginx or 
 
 Use [Composer](https://getcomposer.org/). If you don't have it already installed, then please install as per the [documentation](https://getcomposer.org/doc/00-intro.md).
 
+To give the application access to the database (the test database is under database_sample in the project root)
+go to /config/autoload/ and copy the local.php.dist file and rename the copy as local.php within the same folder.
+Uncomment the return statement and add:
+
+    return array(
+        'db' => array(
+            'username' => <database user>,
+            'password' => <database password>,
+        )
+    );
+    
+Other database settings can be found in global.php.
+
 Web server setup
 ----------------
 
