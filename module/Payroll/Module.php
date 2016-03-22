@@ -33,6 +33,14 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
+
+  /*
+  The ModuleManager will call getAutoloaderConfig automatically for us.
+  Our getAutoloaderConfig() method returns an array that is compatible with ZF2’s AutoloaderFactory.
+  We configure it so that we add a class map file to the ClassMapAutoloader and also add this module’s namespace to the StandardAutoloader.
+  The standard autoloader requires a namespace and the path where to find the files for that namespace.
+  It is PSR-0 compliant and so classes map directly to files as per the PSR-0 rules.
+  */
   public function getAutoloaderConfig()
   {
     return array(
@@ -47,11 +55,22 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     );
   }
 
+  /*
+  The ModuleManager will call getConfig automatically for us.
+  This method simply loads the config/module.config.php file.
+  */
   public function getConfig()
   {
     return include __DIR__ . '/config/module.config.php';
   }
 
+  /*
+  In order to always use the same instance of our Table class,
+  we will use the ServiceManager to define how to create one.
+  This is most easily done in the Module class where we create a method called getServiceConfig()
+  which is automatically called by the ModuleManager and applied to the ServiceManager.
+  We’ll then be able to retrieve it in our controller when we need it.
+  */
   public function getServiceConfig()
   {
     return array(

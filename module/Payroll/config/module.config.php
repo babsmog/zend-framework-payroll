@@ -1,4 +1,10 @@
 <?php
+/*
+The config information is passed to the relevant components by the ServiceManager.
+We need two initial sections: controllers and view_manager.
+The controllers section provides a list of all the controllers provided by the module.
+The controller key must be unique across all modules, so we prefix it with our module name.
+*/
 
 return array(
   'controllers' => array(
@@ -6,7 +12,6 @@ return array(
       'Payroll\Controller\Task' => 'Payroll\Controller\TaskController',
       'Payroll\Controller\Location' => 'Payroll\Controller\LocationController',
       'Payroll\Controller\Personnel' => 'Payroll\Controller\PersonnelController',
-      /*'Payroll\Controller\Address' => 'Payroll\Controller\AddressController',*/
       'Payroll\Controller\PersonnelTask' => 'Payroll\Controller\PersonnelTaskController',
       'Payroll\Controller\WorkDone' => 'Payroll\Controller\WorkDoneController',
       'Payroll\Controller\Pay' => 'Payroll\Controller\PayController',
@@ -109,6 +114,10 @@ return array(
  ),
 
 
+  /*
+  Within the view_manager section, we add our view directory to the TemplatePathStack configuration.
+  This will allow it to find the view scripts for the module that are stored in our view/ directory.
+  */
   'view_manager' => array(
     'template_path_stack' => array(
       'payroll' => __DIR__ . '/../view',

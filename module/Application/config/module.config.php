@@ -64,134 +64,31 @@ return array(
         array(
             'label' => 'Personnel',
             'route' => 'personnel',
-            'pages' => array(
-                array(
-                    'label' => 'Add',
-                    'route' => 'personnel',
-                    'action' => 'add',
-                ),
-                array(
-                    'label' => 'Edit',
-                    'route' => 'personnel',
-                    'action' => 'edit',
-                ),
-                array(
-                    'label' => 'Delete',
-                    'route' => 'personnel',
-                    'action' => 'delete',
-                ),
-            ),
         ),
 
         array(
             'label' => 'Task',
             'route' => 'task',
-            'pages' => array(
-                array(
-                    'label' => 'Add',
-                    'route' => 'task',
-                    'action' => 'add',
-                ),
-                array(
-                    'label' => 'Edit',
-                    'route' => 'task',
-                    'action' => 'edit',
-                ),
-                array(
-                    'label' => 'Delete',
-                    'route' => 'task',
-                    'action' => 'delete',
-                ),
-            ),
         ),
 
         array(
             'label' => 'Assign Task',
             'route' => 'personnel-task',
-            'pages' => array(
-                array(
-                    'label' => 'Add',
-                    'route' => 'personnel-task',
-                    'action' => 'add',
-                ),
-                array(
-                    'label' => 'Edit',
-                    'route' => 'personnel-task',
-                    'action' => 'edit',
-                ),
-                array(
-                    'label' => 'Delete',
-                    'route' => 'personnel-task',
-                    'action' => 'delete',
-                ),
-            ),
         ),
 
         array(
             'label' => 'Work Done',
             'route' => 'work-done',
-            'pages' => array(
-                array(
-                    'label' => 'Add',
-                    'route' => 'work-done',
-                    'action' => 'add',
-                ),
-                array(
-                    'label' => 'Edit',
-                    'route' => 'work-done',
-                    'action' => 'edit',
-                ),
-                array(
-                    'label' => 'Delete',
-                    'route' => 'work-done',
-                    'action' => 'delete',
-                ),
-            ),
         ),
 
         array(
             'label' => 'Pay',
             'route' => 'pay',
-            'pages' => array(
-                array(
-                    'label' => 'Add',
-                    'route' => 'pay',
-                    'action' => 'add',
-                ),
-                array(
-                    'label' => 'Edit',
-                    'route' => 'pay',
-                    'action' => 'edit',
-                ),
-                array(
-                    'label' => 'Delete',
-                    'route' => 'pay',
-                    'action' => 'delete',
-                ),
-            ),
         ),
 
         array(
             'label' => 'Location',
             'route' => 'location',
-            /*
-            'pages' => array(
-                array(
-                    'label' => 'Add',
-                    'route' => 'location',
-                    'action' => 'add',
-                ),
-                array(
-                    'label' => 'Edit',
-                    'route' => 'location',
-                    'action' => 'edit',
-                ),
-                array(
-                    'label' => 'Delete',
-                    'route' => 'location',
-                    'action' => 'delete',
-                ),
-            ),*/
         ),
 
       ),
