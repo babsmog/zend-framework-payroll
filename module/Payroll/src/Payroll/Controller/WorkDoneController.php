@@ -151,6 +151,7 @@ class WorkDoneController extends AbstractActionController
     /////////////////////////////////////////////////////
 
     /* Sets the forms to the data in the work done model */
+    $form->get('work_id')->setAttribute('value',$workDone->workId);
     $form->get('personnel_task_id')->setAttribute('value',$workDone->personnelTaskId);
     $form->get('date_done')->setAttribute('value',$workDone->dateDone);
     $form->get('hrs_worked')->setAttribute('value',$workDone->hoursWorked);
@@ -166,7 +167,6 @@ class WorkDoneController extends AbstractActionController
 
         $workDone->exchangeArray($form->getData());
 
-        $workDone->workId = $id;
         $this->getWorkDoneTable()->saveWorkDone($workDone);
 
         return $this->redirect()->toRoute('work-done',array(

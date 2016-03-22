@@ -105,6 +105,7 @@ then a new address entry is made to the address table and its id is used to set 
 
     $form = new PersonnelForm();
     /* Loading the data array values into the form manually */
+    $form->get('personnel_id')->setAttribute('value',$personnel->personnelId);
     $form->get('fname')->setAttribute('value',$personnel->fName);
     $form->get('lname')->setAttribute('value',$personnel->lName);
     $form->get('age')->setAttribute('value',$personnel->age);
@@ -149,7 +150,6 @@ then a new address entry is made to the address table and its id is used to set 
                 $personnel->address = $address;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        $personnel->personnelId = $id;
 
 
 

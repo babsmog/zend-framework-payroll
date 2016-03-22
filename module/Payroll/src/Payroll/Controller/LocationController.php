@@ -87,6 +87,8 @@ class LocationController extends AbstractActionController
     $form = new LocationForm();
     //The line below was not working as expected for some reason so I decided to do the extraction of the data manually.
     //$form->bind($location);
+
+    $form->get('location_id')->setAttribute('value',$location->locationId);
     $form->get('location_name')->setAttribute('value',$location->locationName);
     $form->get('submit')->setAttribute('value','Save');
 
@@ -98,7 +100,6 @@ class LocationController extends AbstractActionController
       /* If form validates successfully then save changes. */
       if ($form->isValid()) {
         $location->exchangeArray($form->getData()); // Puts form data into the data array in the corresponding model.
-        $location->locationId = $id; //Id was also being set to nothing with bind() and arrayCopy() so here we explicitly reset it back to what it should be.
         $this->getLocationTable()->saveLocation($location);
 
         return $this->redirect()->toRoute('location',array(

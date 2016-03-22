@@ -86,10 +86,11 @@ class TaskController extends AbstractActionController
 
     $form = new TaskForm();
 
-    $form->get('task_name')->setAttribute('value',$task->taskName);
     //The line below was not working as expected for some reason so I decided to do the extraction of the data manually.
     //$form->bind($task);
 
+    $form->get('task_id')->setAttribute('value',$task->taskId);
+    $form->get('task_name')->setAttribute('value',$task->taskName);
     $form->get('submit')->setAttribute('value','Save');
 
     $request = $this->getRequest();
@@ -103,7 +104,6 @@ class TaskController extends AbstractActionController
 
       if ($form->isValid()) {
         $task->exchangeArray($form->getData()); // Puts form data into the data array in the corresponding model.
-        $task->taskId = $id; //Id was also being set to nothing with bind() and arrayCopy() so here we explicitly reset it back to what it should be.
         $this->getTaskTable()->saveTask($task);
 
 

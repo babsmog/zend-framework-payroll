@@ -139,6 +139,7 @@ class PersonnelTaskController extends AbstractActionController
     /////////////////////////////////////////////////////
 
     /* Sets the forms to the data in the pesonnel-task model */
+    $form->get('personnel_task_id')->setAttribute('value',$personnelTask->personnelTaskId);
     $form->get('personnel_id')->setAttribute('value',$personnelTask->personnelId);
     $form->get('task_id')->setAttribute('value',$personnelTask->taskId);
     $form->get('rate')->setAttribute('value',$personnelTask->rate);
@@ -154,7 +155,6 @@ class PersonnelTaskController extends AbstractActionController
 
         $personnelTask->exchangeArray($form->getData());
 
-        $personnelTask->personnelTaskId = $id;
         $this->getPersonnelTaskTable()->savePersonnelTask($personnelTask);
 
         return $this->redirect()->toRoute('personnel-task',array(
