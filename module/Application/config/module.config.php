@@ -174,6 +174,7 @@ return array(
         array(
             'label' => 'Location',
             'route' => 'location',
+            /*
             'pages' => array(
                 array(
                     'label' => 'Add',
@@ -190,29 +191,7 @@ return array(
                     'route' => 'location',
                     'action' => 'delete',
                 ),
-            ),
-        ),
-
-        array(
-            'label' => 'Address',
-            'route' => 'address',
-            'pages' => array(
-                array(
-                    'label' => 'Add',
-                    'route' => 'address',
-                    'action' => 'add',
-                ),
-                array(
-                    'label' => 'Edit',
-                    'route' => 'address',
-                    'action' => 'edit',
-                ),
-                array(
-                    'label' => 'Delete',
-                    'route' => 'address',
-                    'action' => 'delete',
-                ),
-            ),
+            ),*/
         ),
 
       ),

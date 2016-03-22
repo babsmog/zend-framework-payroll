@@ -4,17 +4,22 @@ namespace Payroll\Form;
 
 use Zend\Form\Form;
 
+/*
+Blueprint of the form object to be created.
+*/
 class PersonnelForm extends Form
 {
   public function __construct($name = null)
   {
-    parent::__construct('personnel');
+    parent::__construct('personnel'); // Calls the parent constructor with a name as parameter.
 
+    /* Adds an input field of type hidden to the form. */
     $this->add(array(
         'name' => 'personnel_id',
         'type' => 'Hidden',
     ));
 
+    /* Adds a text input field with some attributes such as the class set. */
     $this->add(array(
       'name' => 'fname',
       'type' => 'Text',
@@ -26,6 +31,7 @@ class PersonnelForm extends Form
       ),
     ));
 
+    /* Adds a text input field with some attributes such as the class set. */
     $this->add(array(
       'name' => 'lname',
       'type' => 'Text',
@@ -37,6 +43,7 @@ class PersonnelForm extends Form
       ),
     ));
 
+    /* Adds a text input field with some attributes such as the class set. */
     $this->add(array(
       'name' => 'age',
       'type' => 'Text',
@@ -48,6 +55,7 @@ class PersonnelForm extends Form
       ),
     ));
 
+    /* Adds a text input field with some attributes such as the class set. */
     $this->add(array(
       'name' => 'street_name',
       'type' => 'Text',
@@ -59,6 +67,7 @@ class PersonnelForm extends Form
       ),
     ));
 
+    /* Adds a text input field with some attributes such as the class set. */
     $this->add(array(
       'name' => 'community',
       'type' => 'Text',
@@ -70,6 +79,7 @@ class PersonnelForm extends Form
       ),
     ));
 
+    /* Adds a text input field with some attributes such as the class set. */
     $this->add(array(
       'name' => 'parish',
       'type' => 'Text',
@@ -81,6 +91,7 @@ class PersonnelForm extends Form
       ),
     ));
 
+    /* Adds a select input field with some attributes such as the class set. */
     $this->add(array(
       'name' => 'gender',
       'type' => 'Select',
@@ -98,6 +109,7 @@ class PersonnelForm extends Form
       ),
     ));
 
+    /* Adds a input field of type submit (submit button) to the form, and set a few familiar attributes. */
     $this->add(array(
       'name' => 'submit',
       'type' => 'Submit',

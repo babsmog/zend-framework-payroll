@@ -11,6 +11,9 @@ class PayController extends AbstractActionController
   protected $payTable;
   protected $personnelTable;
 
+  /*
+  Corresponds to the index of the route.
+  */
   public function indexAction()
   {
 
@@ -22,21 +25,32 @@ class PayController extends AbstractActionController
     $currentPeriod = ((int)floor($difference/14))+1;
     $lastPeriod = $currentPeriod-1;
 
+
+    /*
+    With Zend Framework 2, in order to set variables in the view, we return a ViewModel instance where the first parameter
+    of the constructor is an array from the action containing data we need. These are then automatically passed to the view
+    script. The ViewModel object also allows us to change the view script that is used, but the default is to use
+    {controller name}/{action name}. We can now fill in the index.phtml view script.
+    */
     return new ViewModel(array(
       'pays' => $this->getPayTable()->fetchAll($lastPeriod),
       'personnelTable' => $this->getPersonnelTable(),
     ));
   }
 
-
+  /*
+  Corresponds to the action:delete of the route.
+  */
   public function deleteAction()
   {
     $id = (int) $this->params()->fromRoute('id',0);
+    /* If id from route/action/id is zero redirect to route index. */
     if (!$id) {
       return $this->redirect()->toRoute('pay');
     }
 
     $request = $this->getRequest();
+    /* If request method is POST and 'del' is Yes delete row from database table. */
     if ($request->isPost()) {
       $del = $request->getPost('del','No');
 
@@ -48,12 +62,18 @@ class PayController extends AbstractActionController
       return $this->redirect()->toRoute('pay');
     }
 
+    /* Pass these key value pairings as identifiers into the delete view. */
     return array(
       'id' => $id,
       'pay' => $this->getPayTable()->getPay($id)
     );
   }
 
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
   public function getPayTable()
   {
     if (!$this->payTable) {
@@ -63,6 +83,11 @@ class PayController extends AbstractActionController
     return $this->payTable;
   }
 
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
   public function getPersonnelTable()
   {
     if (!$this->personnelTable) {

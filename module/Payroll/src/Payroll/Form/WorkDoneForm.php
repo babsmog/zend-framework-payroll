@@ -4,6 +4,9 @@ namespace Payroll\Form;
 
 use Zend\Form\Form;
 
+/*
+Blueprint of the form object to be created.
+*/
 class WorkDoneForm extends Form
 {
   protected $personnelTask_array = array();
@@ -11,14 +14,15 @@ class WorkDoneForm extends Form
 
   public function __construct($name = null)
   {
-    parent::__construct('work');
+    parent::__construct('work'); // Calls the parent constructor with a name as parameter.
 
+    /* Adds an input field of type hidden to the form. */
     $this->add(array(
         'name' => 'work_id',
         'type' => 'Hidden',
     ));
 
-
+    /* Adds a date input field. */
     $this->add(array(
       'name' => 'date_done',
       'type' => 'DateSelect',
@@ -30,6 +34,7 @@ class WorkDoneForm extends Form
       ),
     ));
 
+    /* Adds an input field of type hidden to the form. */
     $this->add(array(
       'name' => 'hrs_worked',
       'type' => 'Text',
@@ -41,6 +46,7 @@ class WorkDoneForm extends Form
       ),
     ));
 
+    /* Adds a input field of type submit (submit button) to the form, and set a few familiar attributes. */
     $this->add(array(
       'name' => 'submit',
       'type' => 'Submit',
@@ -52,7 +58,12 @@ class WorkDoneForm extends Form
     ));
   }
 
-
+  /*
+  This method is used to add a select input to the form just before it is presented to the user.
+  This select input should have listed all personnel and task assignments from the database passed as parameter
+  in this method.This is done to keep the logic for retrieving an array of personnel-task assignments from the database within the Table
+  models and to avoid adding too much unnecessary code that is not form specific to this class.
+  */
   public function setPersonnelTaskArray($array) {
     $this->personnelTask_array = $array;
 
@@ -71,6 +82,12 @@ class WorkDoneForm extends Form
     ));
   }
 
+  /*
+  This method is used to add a select input to the form just before it is presented to the user.
+  This select input should have listed all locations from the database passed as parameter in this method.
+  This is done to keep the logic for retrieving an array of locations from the database within the Table
+  models and to avoid adding too much unnecessary code that is not form specific to this class.
+  */
   public function setLocationArray($array) {
     $this->location_array = $array;
 

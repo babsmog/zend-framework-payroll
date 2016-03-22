@@ -17,9 +17,17 @@ class WorkDoneController extends AbstractActionController
   protected $locationTable;
   protected $payTable;
 
+  /*
+  Corresponds to the index of the route.
+  */
   public function indexAction()
   {
-
+    /*
+    With Zend Framework 2, in order to set variables in the view, we return a ViewModel instance where the first parameter
+    of the constructor is an array from the action containing data we need. These are then automatically passed to the view
+    script. The ViewModel object also allows us to change the view script that is used, but the default is to use
+    {controller name}/{action name}. We can now fill in the index.phtml view script.
+    */
     return new ViewModel(array(
       'works' => $this->getWorkDoneTable()->fetchAll(),
       'personnelTaskTable' => $this->getPersonnelTaskTable(),
@@ -29,10 +37,18 @@ class WorkDoneController extends AbstractActionController
     ));
   }
 
-
+  /*
+  Corresponds to the action:add of the route.
+  */
   public function addAction()
   {
     $form = new WorkDoneForm();
+
+    /*
+    Gets a list of all personnel-task assignments in the database table
+    and setPersonnelTaskArray which adds a select input to the form created with
+    the selection list being that of the personnel-tasks' full name and id along with the rate.
+    */
     //////////////////////////////////////////////////
     $personnelTasks = $this->getPersonnelTaskTable()->fetchAll();
     $personnelTask_array = array();
@@ -45,6 +61,12 @@ class WorkDoneController extends AbstractActionController
     $form->setPersonnelTaskArray($personnelTask_array);
     //////////////////////////////////////////////////////
 
+
+    /*
+    Gets a list of all locations in the database table
+    and setLocationArray which adds a select input to the form created with
+    the selection list being that of the locations' name.
+    */
     /////////////////////////////////////////////////////
     $locations = $this->getLocationTable()->fetchAll();
     $location_array = array();
@@ -53,6 +75,7 @@ class WorkDoneController extends AbstractActionController
     endforeach;
     $form->setLocationArray($location_array);
     /////////////////////////////////////////////////////
+
     $form->get('submit')->setValue('Add');
 
     $request = $this->getRequest();
@@ -72,11 +95,13 @@ class WorkDoneController extends AbstractActionController
     return array('form' => $form);
   }
 
-
+  /*
+  Corresponds to the action:edit of the route.
+  */
   public function editAction()
   {
     $id = (int) $this->params()->fromRoute('id',0);
-
+    /* If id from route/action/id is zero redirect to add form. */
     if (!$id) {
       return $this->redirect()->toRoute('work-done',array(
         'action' => 'add'
@@ -94,6 +119,11 @@ class WorkDoneController extends AbstractActionController
 
     $form = new WorkDoneForm();
 
+    /*
+    Gets a list of all personnel-task assignments in the database table
+    and setPersonnelTaskArray which adds a select input to the form created with
+    the selection list being that of the personnel-tasks' full name and id along with the rate.
+    */
     //////////////////////////////////////////////////
     $personnelTasks = $this->getPersonnelTaskTable()->fetchAll();
     $personnelTask_array = array();
@@ -106,6 +136,11 @@ class WorkDoneController extends AbstractActionController
     $form->setPersonnelTaskArray($personnelTask_array);
     //////////////////////////////////////////////////////
 
+    /*
+    Gets a list of all locations in the database table
+    and setLocationArray which adds a select input to the form created with
+    the selection list being that of the locations' name.
+    */
     /////////////////////////////////////////////////////
     $locations = $this->getLocationTable()->fetchAll();
     $location_array = array();
@@ -115,6 +150,7 @@ class WorkDoneController extends AbstractActionController
     $form->setLocationArray($location_array);
     /////////////////////////////////////////////////////
 
+    /* Sets the forms to the data in the work done model */
     $form->get('personnel_task_id')->setAttribute('value',$workDone->personnelTaskId);
     $form->get('date_done')->setAttribute('value',$workDone->dateDone);
     $form->get('hrs_worked')->setAttribute('value',$workDone->hoursWorked);
@@ -139,6 +175,7 @@ class WorkDoneController extends AbstractActionController
       }
     }
 
+    /* Pass these key value pairings as identifiers into the edit view. */
     return array(
       'id' => $id,
       'form' => $form,
@@ -146,15 +183,19 @@ class WorkDoneController extends AbstractActionController
 
   }
 
-
+  /*
+  Corresponds to the action:delete of the route.
+  */
   public function deleteAction()
   {
     $id = (int) $this->params()->fromRoute('id',0);
+    /* If id from route/action/id is zero redirect to route index. */
     if (!$id) {
       return $this->redirect()->toRoute('work-done');
     }
 
     $request = $this->getRequest();
+    /* If request method is POST and 'del' is Yes delete row from database table. */
     if ($request->isPost()) {
       $del = $request->getPost('del','No');
 
@@ -166,12 +207,16 @@ class WorkDoneController extends AbstractActionController
       return $this->redirect()->toRoute('work-done');
     }
 
+    /* Pass these key value pairings as identifiers into the delete view. */
     return array(
       'id' => $id,
       'workDone' => $this->getWorkDoneTable()->getWorkDone($id)
     );
   }
 
+  /*
+  Calculates total pay for each worked done by employee in the last period.
+  */
   public function calculateAction()
   {
     $lastPeriod = 0;
@@ -184,16 +229,21 @@ class WorkDoneController extends AbstractActionController
     $difference = (date_diff($startDate,$today)->format("%a"));
     $currentPeriod = ((int)floor($difference/14))+1;
     ////////////////////////
+
     if ($currentPeriod==1) {
-      $lastPeriod = 27;
+      $lastPeriod = 27; //There are 27 periods in a year.
       $year = ((int) date('Y')) - 1;
     }
     else {
       $lastPeriod = $currentPeriod-1;
       $year = ((int) date('Y'));
     }
-    $worksDoneLastPeriod=$this->getWorkDoneTable()->fetchAll2($lastPeriod);
+
+
+    $worksDoneLastPeriod=$this->getWorkDoneTable()->fetchAll2($lastPeriod); // Get records of workdone from the last period
     $pays = array();
+
+    /* Find the works done by each individual and find the total pay to be reached */
     foreach ($worksDoneLastPeriod as $work) :
       $personnelTask = $this->getPersonnelTaskTable()->getPersonnelTask($work->personnelTaskId);
       $personnelId = $personnelTask->personnelId;
@@ -208,6 +258,7 @@ class WorkDoneController extends AbstractActionController
       }
     endforeach;
 
+    /* create and save pay */
     $ids = array_keys($pays);
     foreach ($ids as $id) :
       $payCheck = new Pay();
@@ -223,6 +274,11 @@ class WorkDoneController extends AbstractActionController
     return $this->redirect()->toRoute('pay');
   }
 
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
   public function getWorkDoneTable()
   {
     if (!$this->workDoneTable) {
@@ -232,6 +288,11 @@ class WorkDoneController extends AbstractActionController
     return $this->workDoneTable;
   }
 
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
   public function getPersonnelTaskTable()
   {
     if (!$this->personnelTaskTable) {
@@ -241,6 +302,11 @@ class WorkDoneController extends AbstractActionController
     return $this->personnelTaskTable;
   }
 
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
   public function getPersonnelTable()
   {
     if (!$this->personnelTable) {
@@ -250,6 +316,11 @@ class WorkDoneController extends AbstractActionController
     return $this->personnelTable;
   }
 
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
   public function getTaskTable()
   {
     if (!$this->taskTable) {
@@ -259,6 +330,11 @@ class WorkDoneController extends AbstractActionController
     return $this->taskTable;
   }
 
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
   public function getLocationTable()
   {
     if (!$this->locationTable) {
@@ -268,6 +344,11 @@ class WorkDoneController extends AbstractActionController
     return $this->locationTable;
   }
 
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
   public function getPayTable()
   {
     if (!$this->payTable) {

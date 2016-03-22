@@ -6,7 +6,7 @@ return array(
       'Payroll\Controller\Task' => 'Payroll\Controller\TaskController',
       'Payroll\Controller\Location' => 'Payroll\Controller\LocationController',
       'Payroll\Controller\Personnel' => 'Payroll\Controller\PersonnelController',
-      'Payroll\Controller\Address' => 'Payroll\Controller\AddressController',
+      /*'Payroll\Controller\Address' => 'Payroll\Controller\AddressController',*/
       'Payroll\Controller\PersonnelTask' => 'Payroll\Controller\PersonnelTaskController',
       'Payroll\Controller\WorkDone' => 'Payroll\Controller\WorkDoneController',
       'Payroll\Controller\Pay' => 'Payroll\Controller\PayController',
@@ -59,21 +59,6 @@ return array(
                    ),
                ),
            ),
-
-           'address' => array(
-               'type'    => 'segment',
-               'options' => array(
-                   'route'    => '/address[/:action][/:id]',
-                   'constraints' => array(
-                       'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                       'id'     => '[0-9]+',
-                   ),
-                   'defaults' => array(
-                       'controller' => 'Payroll\Controller\Address',
-                       'action'     => 'index',
-                    ),
-                ),
-            ),
 
             'personnel-task' => array(
                 'type'    => 'segment',
