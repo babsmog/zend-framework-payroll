@@ -2,6 +2,7 @@
 
 $title = 'Edit personnel and task assignment';
 $this->headTitle($title);
+$this->headScript()->appendFile('/js/personnelTaskValidator.js');
 
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
@@ -39,6 +40,7 @@ echo $this->formSelect($form->get('task_id'));
 <?php
 echo $this->formRow($form->get('rate'));
 ?>
+<br/><span id='rate'></span>
 </div>
 
 <div class='form-group'>

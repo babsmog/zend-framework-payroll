@@ -28,6 +28,7 @@ class TaskForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'taskValidator(this)',
       ),
     ));
 

@@ -75,6 +75,13 @@ class Location implements InputFilterAwareInterface
         ),
         'validators' => array(
           array(
+            'name' => 'Regex',
+            'options' => array(
+              'pattern' => '/^[A-Za-z]+(\s*|\s+[0-9]*|\s+[A-Za-z]*|[A-Za-z\s]*)$/',
+            ),
+          ),
+
+          array(
             'name' => 'StringLength',
             'options' => array(
               'encoding' => 'UTF-8',

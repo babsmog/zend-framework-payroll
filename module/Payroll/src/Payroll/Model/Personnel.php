@@ -90,6 +90,11 @@ class Personnel implements InputFilterAwareInterface
               'max' => 100,
             ),
           ),
+
+          array(
+            'name' => 'Alpha',
+          ),
+
         ),
       ));
 
@@ -109,6 +114,11 @@ class Personnel implements InputFilterAwareInterface
               'max' => 100,
             ),
           ),
+
+          array(
+            'name' => 'Alpha',
+          ),
+
         ),
       ));
 
@@ -116,7 +126,30 @@ class Personnel implements InputFilterAwareInterface
         'name' => 'age',
         'required' => true,
         'filters' => array(
-          array('name' => 'Int'),
+          array('name' => 'StripTags'),
+          array('name' => 'StringTrim'),
+        ),
+        'validators' => array(
+          array(
+            'name' => 'Digits',
+          ),
+
+          array(
+            'name' => 'LessThan',
+            'options' => array(
+              'max' => 70,
+              'inclusive' => true,
+            ),
+          ),
+
+          array(
+            'name' => 'GreaterThan',
+            'options' => array(
+              'min' => 18,
+              'inclusive' => true,
+            ),
+          ),
+
         ),
       ));
 
@@ -136,6 +169,14 @@ class Personnel implements InputFilterAwareInterface
               'max' => 100,
             ),
           ),
+
+          array(
+            'name' => 'Regex',
+            'options' => array(
+              'pattern' => '/^([0-9]+|[0-9]+\/[0-9]+)\s+[A-Za-z]+[A-Za-z\s.]*$/',
+            ),
+          ),
+
         ),
       ));
 
@@ -155,6 +196,14 @@ class Personnel implements InputFilterAwareInterface
               'max' => 100,
             ),
           ),
+
+          array(
+            'name' => 'Regex',
+            'options' => array(
+              'pattern' => '/^[A-Za-z]+[\sA-Za-z0-9]*$/',
+            ),
+          ),
+
         ),
       ));
 

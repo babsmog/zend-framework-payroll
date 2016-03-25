@@ -28,6 +28,7 @@ class LocationForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'locationValidator(this)',
       ),
     ));
 

@@ -2,6 +2,7 @@
 
 $title = 'Add record of work done';
 $this->headTitle($title);
+$this->headScript()->appendFile('/js/workDoneValidator.js');
 
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
@@ -34,6 +35,7 @@ echo $this->formDateSelect($form->get('date_done'), IntlDateFormatter::LONG, 'en
 <?php
 echo $this->formRow($form->get('hrs_worked'));
 ?>
+<br/><span id='hrs_worked'></span>
 </div>
 
 <div class='form-group'>

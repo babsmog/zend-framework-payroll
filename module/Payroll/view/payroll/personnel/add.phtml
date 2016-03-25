@@ -2,11 +2,13 @@
 
 $title = 'Add new personnel';
 $this->headTitle($title);
+$this->headScript()->appendFile('/js/personnelValidator.js');
 
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <?php
 $form->setAttribute('action',$this->url('personnel',array('action' => 'add')));
+$form->setAttribute('onsubmit','return isFormValid()');
 $form->prepare();
 
 echo $this->form()->openTag($form);
@@ -17,35 +19,40 @@ echo $this->formHidden($form->get('personnel_id'));
 <?php
 echo $this->formRow($form->get('fname'));
 ?>
+<br/><span id='fname'></span>
 </div>
 
 <div class='form-group'>
 <?php
 echo $this->formRow($form->get('lname'));
 ?>
+<br/><span id='lname'></span>
 </div>
 
 <div class='form-group'>
 <?php
 echo $this->formRow($form->get('age'));
 ?>
+<br/><span id='age'></span>
 </div>
 
 <div class='form-group'>
 <?php
 echo $this->formRow($form->get('street_name'));
 ?>
+<br/><span id='street_name'></span>
 </div>
 
 <div class='form-group'>
 <?php
 echo $this->formRow($form->get('community'));
 ?>
+<br/><span id='community'></span>
 </div>
 
 <div class='form-group'>
 <?php
-echo $this->formRow($form->get('parish'));
+echo $this->formSelect($form->get('parish'));
 ?>
 </div>
 

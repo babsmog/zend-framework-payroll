@@ -31,6 +31,7 @@ class PersonnelTaskForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'rateValidator(this)',
       ),
     ));
 

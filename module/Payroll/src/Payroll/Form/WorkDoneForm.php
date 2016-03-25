@@ -43,6 +43,7 @@ class WorkDoneForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'workDoneValidator(this)',
       ),
     ));
 

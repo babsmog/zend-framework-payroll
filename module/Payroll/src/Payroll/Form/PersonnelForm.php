@@ -28,6 +28,7 @@ class PersonnelForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'nameValidator(this)',
       ),
     ));
 
@@ -40,6 +41,7 @@ class PersonnelForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'nameValidator(this)',
       ),
     ));
 
@@ -52,6 +54,7 @@ class PersonnelForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'ageValidator(this)',
       ),
     ));
 
@@ -64,6 +67,7 @@ class PersonnelForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'nameValidator(this)',
       ),
     ));
 
@@ -76,18 +80,37 @@ class PersonnelForm extends Form
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'nameValidator(this)',
       ),
     ));
 
-    /* Adds a text input field with some attributes such as the class set. */
+    /* Adds a select input field with some attributes such as the class set. */
     $this->add(array(
       'name' => 'parish',
-      'type' => 'Text',
-      'options' => array(
-        'label' => 'Parish ',
-      ),
+      'type' => 'Select',
       'attributes' => array(
         'class' => 'form-control',
+        'style' => 'max-width:200px;',
+        'id' => 'gender',
+      ),
+      'options' => array(
+        'label' => 'Parish',
+        'options' => array(
+          'St.Andrew'   => 'St.Andrew',
+          'St.James' => 'St.James',
+          'St.Ann'   => 'St.Ann',
+          'Westmoreland' => 'Westmoreland',
+          'St.Elizabeth'   => 'St.Elizabeth',
+          'Trelawny' => 'Trelawny',
+          'St.Thomas'   => 'St.Thomas',
+          'Portland' => 'Portland',
+          'St.Mary'   => 'St.Mary',
+          'Manchester' => 'Manchester',
+          'St.Catherine'   => 'St.Catherine',
+          'Kingston' => 'Kingston',
+          'Hanover'   => 'Hanover',
+          'Clarendon' => 'Clarendon',
+        ),
       ),
     ));
 

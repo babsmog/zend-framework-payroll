@@ -103,11 +103,25 @@ class WorkDone implements InputFilterAwareInterface
         ),
         'validators' => array(
           array(
-            'name' => 'StringLength',
+            'name' => 'Regex',
             'options' => array(
-              'encoding' => 'UTF-8',
-              'min' => 1,
-              'max' => 7,
+              'pattern' => '/^[0-9]+(.[0-9]+|[0-9]*)$/',
+            ),
+          ),
+
+          array(
+            'name' => 'LessThan',
+            'options' => array(
+              'max' => 999.99,
+              'inclusive' => true,
+            ),
+          ),
+
+          array(
+            'name' => 'GreaterThan',
+            'options' => array(
+              'min' => 0,
+              'inclusive' => true,
             ),
           ),
         ),
