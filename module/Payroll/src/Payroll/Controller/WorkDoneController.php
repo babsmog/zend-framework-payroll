@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 use Payroll\Model\WorkDone;
 use Payroll\Form\WorkDoneForm;
 use Payroll\Model\Pay;
+use Zend\Validator\Date;
 
 class WorkDoneController extends AbstractActionController
 {
@@ -16,6 +17,8 @@ class WorkDoneController extends AbstractActionController
   protected $taskTable;
   protected $locationTable;
   protected $payTable;
+  protected $deductionTable;
+  protected $payDeductionTable;
 
   /*
   Corresponds to the index of the route.
@@ -85,6 +88,7 @@ class WorkDoneController extends AbstractActionController
       $form->setData($request->getPost());
 
       if ($form->isValid()) {
+
         $workDone->exchangeArray($form->getData());
 
         $this->getWorkDoneTable()->saveWorkDone($workDone);
@@ -258,17 +262,64 @@ class WorkDoneController extends AbstractActionController
       }
     endforeach;
 
+    $deductions = $this->getDeductionTable()->fetchAll2(1); //Get the periodic taxes and deductions that are applied to all employees every period
+    $deductionPercentagesTotal = 0.0;
+    $deductionFixedAmountTotal = 0.0;
+    $fileContent = "";
+    foreach ($deductions as $deduction):
+      if ($deduction->fixedAmount){
+        $deductionFixedAmountTotal += $deduction->fixedAmount;
+        $fileContent .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
+      }
+      else {
+        $deductionPercentagesTotal += $deduction->deductionPercentage;
+        $fileContent .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
+      }
+    endforeach;
+
+
+    $otherDeductions = $this->getDeductionTable()->fetchAll2(0);
+    $otherDeductionsTotal = 0.0;
+
+
     /* create and save pay */
     $ids = array_keys($pays);
     foreach ($ids as $id) :
       $payCheck = new Pay();
       $payCheck->payId = 0;
       $payCheck->personnelId = $id;
-      $payCheck->amount = $pays[$id];
+      $personnel = $this->getPersonnelTable()->getPersonnel($id);
+
+      foreach ($otherDeductions as $otherDeduction):
+        # code...
+        $deductions = $this->getPayDeductionTable()->fetchAll2($id);
+        foreach ($deductions as $deduction) :
+          # code...
+          if ($deduction->duration == 0){
+            break;
+          }
+          if ($deduction->deductionPercentage){
+            $otherDeductionsTotal += ($pays[$id]*($deduction->deductionPercentage/100.00));
+            $fileContent .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
+          }
+          else {
+            $otherDeductionsTotal += $deduction->fixedAmount;
+            $fileContent .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
+          }
+        endforeach;
+      endforeach;
+
+      $payCheck->grossAmount = $pays[$id];
+      $payCheck->netAmount = $pays[$id] - ($deductionFixedAmountTotal+($pays[$id]*($deductionPercentagesTotal/100.00))+$otherDeductionsTotal);
       $payCheck->period = $lastPeriod;
       $payCheck->year = $year;
-
+      $fileContent =   $personnel->fName.' '.$personnel->lName.','.$payCheck->grossAmount.','.$payCheck->netAmount.','.$payCheck->period.','
+      .$payCheck->year.','.$fileContent;
       $this->getPayTable()->savePay($payCheck);
+      $viewablePayslipFile = fopen('./payslips/personnel_'.$id.'_period_'.$payCheck->period.'_'.$year.'.dat','w');
+      fwrite($viewablePayslipFile,$fileContent);
+      fclose($viewablePayslipFile);
+
     endforeach;
 
     return $this->redirect()->toRoute('pay');
@@ -356,6 +407,34 @@ class WorkDoneController extends AbstractActionController
       $this->payTable = $sm->get('Payroll\Model\PayTable');
     }
     return $this->payTable;
+  }
+
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
+  public function getDeductionTable()
+  {
+    if (!$this->deductionTable) {
+      $sm = $this->getServiceLocator();
+      $this->deductionTable = $sm->get('Payroll\Model\DeductionTable');
+    }
+    return $this->deductionTable;
+  }
+
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
+  public function getPayDeductionTable()
+  {
+    if (!$this->payDeductionTable) {
+      $sm = $this->getServiceLocator();
+      $this->payDeductionTable = $sm->get('Payroll\Model\PayDeductionTable');
+    }
+    return $this->payDeductionTable;
   }
 
 }

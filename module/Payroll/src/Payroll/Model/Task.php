@@ -79,6 +79,7 @@ class Task implements InputFilterAwareInterface
             'name' => 'Regex',
             'options' => array(
               'pattern' => '/^[A-Za-z]+(\s*|\s+[0-9]*|\s+[A-Za-z]*|[A-Za-z\s]*)$/',
+              'setMessage' => 'invalid name no special characters allowed or numbers attached to words.',
             ),
           ),
 

@@ -11,7 +11,7 @@ interfacing with data in a database table. Be aware though that the Table Data G
 There is also a temptation to put database access code into controller action methods as these are exposed by
 Zend\Db\TableGateway\AbstractTableGateway. Don’t do this!
 */
-class WorkDoneTable
+class PayDeductionTable
 {
   protected $tableGateway;
 
@@ -30,14 +30,9 @@ class WorkDoneTable
     return $resultSet;
   }
 
-  /*
-  Gets all the records from the entity table filtered by a specific period
-  and return them as a resultSet.
-  */
-  public function fetchAll2($period)
+  public function fetchAll2($personnelId)
   {
-    $period = (int) $period;
-    $resultSet = $this->tableGateway->select(array('period' => $period));
+    $resultSet = $this->tableGateway->select(array('personnel_id' => $personnelId));
     return $resultSet;
   }
 
@@ -46,13 +41,30 @@ class WorkDoneTable
   as parameter. If a record with the specified id cannot be found
   an Exception is thrown.
   */
-  public function getWorkDone($id)
+  public function getPayDeduction($id)
   {
     $id = (int) $id;
-    $rowset = $this->tableGateway->select(array('work_id' => $id));
+    $rowset = $this->tableGateway->select(array('pay_deduction_id' => $id));
     $row = $rowset->current();
     if (!$row) {
       throw new \Exception("Could not find row $id");
+    }
+    return $row;
+  }
+
+  /*
+  Retrieves the record from the entity table with the specified id passed
+  as parameter. If a record with the specified id cannot be found
+  an Exception is thrown.
+  */
+  public function getPayDeduction2($personnelId,$deductionId)
+  {
+    $personnelId = (int) $personnelId;
+    $rowset = $this->tableGateway->select(array('personnel_id' => $personnelId,
+    'deduction_id' => $deductionId));
+    $row = $rowset->current();
+    if (!$row) {
+      throw new \Exception("Could not find row");
     }
     return $row;
   }
@@ -62,39 +74,24 @@ class WorkDoneTable
   to lowercase followed by capitalizing each word. Throws an exception if the id
   associated with the entity object cannot be found.
   */
-  public function saveWorkDone(WorkDone $work)
+  public function savePayDeduction(PayDeduction $payDeduction)
   {
 
-    //Auto calculate period base on dateDone
-    $dateWorkDone = date_create($work->dateDone);
-    $startDate = date_create($dateWorkDone->format("Y").'-01-01');
-    $periodDuration = 14;
-    $difference = (date_diff($startDate,$dateWorkDone)->format("%a"));
-    $work->period = ((int)floor($difference/14))+1;
-    ////////////////////////
-
-
-    //Auto set year
-    $work->year = $dateWorkDone->format("Y");
-    /////////////////////////////
-
     $data = array(
-      'personnel_task_id' => $work->personnelTaskId,
-      'date_done' => $work->dateDone,
-      'period' => ((int) $work->period),
-      'hrs_worked' => ((Float) $work->hoursWorked),
-      'location_id' => $work->locationId,
-      'year' => ((int) $work->year),
+      'pay_deduction_id' => $payDeduction->payDeductionId,
+      'deduction_id' => $payDeduction->deductionId,
+      'personnel_id' => $payDeduction->personnelId,
+      'duration' => $payDeduction->duration,
     );
 
-    $id = (int) $work->workId;
+    $id = (int) $payDeduction->payDeductionId;
     if ($id == 0) {
       $this->tableGateway->insert($data);
     } else {
-      if ($this->getWorkDone($id)) {
-        $this->tableGateway->update($data, array('work_id'=> $id));
+      if ($this->getPayDeduction($id)) {
+        $this->tableGateway->update($data, array('pay_deduction_id'=> $id));
       } else {
-        throw new \Exception('WorkDone id does not exist');
+        throw new \Exception('PayDeduction id does not exist');
       }
     }
   }
@@ -102,8 +99,8 @@ class WorkDoneTable
   /*
   deletes an row in the entity table based on the id passed as parameter.
   */
-  public function deleteWorkDone($id)
+  public function deletePayDeduction($id)
   {
-    $this->tableGateway->delete(array('work_id' => (int) $id));
+    $this->tableGateway->delete(array('pay_deduction_id' => (int) $id));
   }
 }

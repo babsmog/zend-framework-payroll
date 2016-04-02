@@ -56,7 +56,8 @@ class PayTable
   {
     $data = array(
       'personnel_id' => $pay->personnelId,
-      'amount' => (Float) $pay->amount,
+      'gross_amount' => (Float) $pay->grossAmount,
+      'net_amount' => (Float) $pay->netAmount,
       'period' => (int) $pay->period,
       'year' => (int) $pay->year,
     );

@@ -25,12 +25,13 @@ class WorkDoneForm extends Form
     /* Adds a date input field. */
     $this->add(array(
       'name' => 'date_done',
-      'type' => 'DateSelect',
+      'type' => 'Text',
       'options' => array(
-        'label' => 'Date Completed ',
+        'label' => 'Date Done ',
       ),
       'attributes' => array(
         'class' => 'form-control',
+        'onchange' => 'workDoneDateValidator(this)',
       ),
     ));
 

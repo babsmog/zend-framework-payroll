@@ -174,6 +174,7 @@ class Personnel implements InputFilterAwareInterface
             'name' => 'Regex',
             'options' => array(
               'pattern' => '/^([0-9]+|[0-9]+\/[0-9]+)\s+[A-Za-z]+[A-Za-z\s.]*$/',
+              'setMessage' => 'invalid format- should be a number follow by a street name with just alpha characters.',
             ),
           ),
 
@@ -201,6 +202,7 @@ class Personnel implements InputFilterAwareInterface
             'name' => 'Regex',
             'options' => array(
               'pattern' => '/^[A-Za-z]+[\sA-Za-z0-9]*$/',
+              'setMessage' => 'invalid - no special characters allowed and no numbers on the first word',
             ),
           ),
 

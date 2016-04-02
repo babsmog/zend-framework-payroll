@@ -1,4 +1,4 @@
-var isValid = new Array(false, false, false,false,false); ;
+var isValid = new Array(true, true, true, true, true); ;
 
 
 function ageValidator(element){

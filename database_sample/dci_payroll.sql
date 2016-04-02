@@ -16,6 +16,7 @@ create table if not exists Personnel(
   age int unsigned not null,
   address int unsigned not null,
   gender char not null,
+  trn varchar(11),
   primary key(personnel_id),
   foreign key(address) references Address(addr_id) on delete cascade on update cascade
 );
@@ -58,10 +59,30 @@ create table if not exists Work_Done(
 create table if not exists Pay(
   pay_id int unsigned auto_increment not null,
   personnel_id int unsigned not null,
-  amount decimal(9,2) not null,
+  gross_amount decimal(9,2) not null,
+  net_amount decimal(9,2) not null,
   period int unsigned not null,
   year int unsigned not null,
   primary key(pay_id),
+  foreign key(personnel_id) references Personnel(personnel_id) on delete cascade on update cascade
+);
+
+create table if not exists Deduction(
+  deduction_id int unsigned auto_increment not null,
+  deduction_name varchar(100) not null,
+  deduction_percentage decimal(5,2),
+  fixed_amount decimal(9,2),
+  periodic_deduction int not null,
+  primary key(deduction_id)
+);
+
+create table if not exists Pay_Deduction(
+  pay_deduction_id int unsigned auto_increment not null,
+  deduction_id int unsigned not null,
+  personnel_id int unsigned not null,
+  duration int unsigned not null,
+  primary key(pay_deduction_id),
+  foreign key(deduction_id) references Deduction(deduction_id) on delete cascade on update cascade,
   foreign key(personnel_id) references Personnel(personnel_id) on delete cascade on update cascade
 );
 
@@ -79,20 +100,20 @@ insert into address (street_name,community,parish)
   values ('12 Warioland Terrance','Mushroom Kingdom','St. James');
 
 /*-------------------------PERSONNEL-------------------------------------------*/
-insert into personnel (fname,lname,age,address,gender)
-  values ('Ashley', 'Gordon',35,4,'F');
+insert into personnel (fname,lname,age,address,gender,trn)
+  values ('Ashley', 'Gordon',35,4,'F','123-456-789');
 
-insert into personnel (fname,lname,age,address,gender)
-  values ('Roc', 'C',18,2,'M');
+insert into personnel (fname,lname,age,address,gender,trn)
+  values ('Roc', 'C',18,2,'M','123-456-789');
 
-insert into personnel (fname,lname,age,address,gender)
-  values ('Rick', 'Law',25,1,'M');
+insert into personnel (fname,lname,age,address,gender,trn)
+  values ('Rick', 'Law',25,1,'M','123-456-789');
 
-insert into personnel (fname,lname,age,address,gender)
-  values ('Kenneth', 'Cole',22,3,'M');
+insert into personnel (fname,lname,age,address,gender,trn)
+  values ('Kenneth', 'Cole',22,3,'M','123-456-789');
 
-insert into personnel (fname,lname,age,address,gender)
-  values ('Mario', 'Brown',27,4,'M');
+insert into personnel (fname,lname,age,address,gender,trn)
+  values ('Mario', 'Brown',27,4,'M','123-456-789');
 
 /*---------------------------TASK---------------------------------------------*/
 insert into task (task_name)
@@ -152,10 +173,14 @@ insert into Work_Done (personnel_task_id,date_done,period,hrs_worked,location_id
   values (1,'2015-01-13',2,8,2,2015);
 
 
-
-/*----------------Pay-------------------------------*/
-insert into Pay (personnel_id,amount,period,year)
-  values (1,1600.00,2,2015);
-
-insert into Pay (personnel_id,amount,period,year)
-  values (2,600.00,1,2016);
+/*-----------------Deduction-----------------------*/
+insert into deduction (deduction_name,deduction_percentage,periodic_deduction)
+  values ('Income Tax',25,1);
+insert into deduction (deduction_name,deduction_percentage,periodic_deduction)
+  values ('Education Tax',3.5,1);
+insert into deduction (deduction_name,deduction_percentage,periodic_deduction)
+  values ('National Insurance Scheme Tax',2.5,1);
+insert into deduction (deduction_name,deduction_percentage,periodic_deduction)
+  values ('Human Employment and Resource Training Tax',3,1);
+insert into deduction (deduction_name,deduction_percentage,periodic_deduction)
+  values ('National Housing Trust Tax',3,1);

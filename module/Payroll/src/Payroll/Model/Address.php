@@ -70,6 +70,7 @@ class Address implements InputFilterAwareInterface
         ),
       ));
 
+      /*
       $inputFilter->add(array(
         'name' => 'street_name',
         'required' => true,
@@ -126,6 +127,7 @@ class Address implements InputFilterAwareInterface
           ),
         ),
       ));
+      */
 
       $this->inputFilter = $inputFilter;
     }

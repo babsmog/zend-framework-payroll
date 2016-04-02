@@ -16,7 +16,8 @@ class Pay
 {
   public $payId;
   public $personnelId;
-  public $amount;
+  public $grossAmount;
+  public $netGross;
   public $period;
   public $year;
   protected $inputFilter;
@@ -29,7 +30,8 @@ class Pay
   {
     $this->payId = (isset($data['pay_id'])) ? $data['pay_id'] : null;
     $this->personnelId = (isset($data['personnel_id'])) ? $data['personnel_id'] : null;
-    $this->amount = (isset($data['amount'])) ? $data['amount'] : null;
+    $this->grossAmount = (isset($data['gross_amount'])) ? $data['gross_amount'] : null;
+    $this->netAmount = (isset($data['net_amount'])) ? $data['net_amount'] : null;
     $this->period = (isset($data['period'])) ? $data['period'] : null;
     $this->year = (isset($data['year'])) ? $data['year'] : null;
   }

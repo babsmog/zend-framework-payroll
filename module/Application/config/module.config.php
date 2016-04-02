@@ -91,6 +91,11 @@ return array(
             'route' => 'location',
         ),
 
+        array(
+            'label' => 'Deduction',
+            'route' => 'deduction',
+        ),
+
       ),
     ),
 

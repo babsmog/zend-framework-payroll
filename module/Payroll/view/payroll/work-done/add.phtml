@@ -8,6 +8,7 @@ $this->headScript()->appendFile('/js/workDoneValidator.js');
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <?php
 $form->setAttribute('action',$this->url('work-done',array('action' => 'add')));
+$form->setAttribute('onsubmit','return isFormValid()');
 $form->prepare();
 
 echo $this->form()->openTag($form);
@@ -24,11 +25,10 @@ echo $this->formSelect($form->get('personnel_task_id'));
 </div>
 
 <div class='form-group'>
-<label>Date</label>
-<br/>
 <?php
-echo $this->formDateSelect($form->get('date_done'), IntlDateFormatter::LONG, 'en_US');
+echo $this->formRow($form->get('date_done'));
 ?>
+<br/><span id='date_done'>format: yyyy-mm-dd</span>
 </div>
 
 <div class='form-group'>

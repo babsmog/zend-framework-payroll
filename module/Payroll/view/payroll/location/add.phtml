@@ -8,6 +8,7 @@ $this->headScript()->appendFile('/js/locationValidator.js');
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <?php
 $form->setAttribute('action',$this->url('location',array('action' => 'add')));
+$form->setAttribute('onsubmit','return isFormValid()');
 $form->prepare();
 
 echo $this->form()->openTag($form);

@@ -99,6 +99,7 @@ class PersonnelTask implements InputFilterAwareInterface
             'name' => 'Regex',
             'options' => array(
               'pattern' => '/^[0-9]+(.[0-9]+|[0-9]*)$/',
+              'setMessage' => 'Should be a valid decimal value.',
             ),
           ),
 

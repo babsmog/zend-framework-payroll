@@ -1,0 +1,70 @@
+<?php
+
+$title = 'Deductions';
+$this->headTitle($title);
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+  <a class="btn btn-success" href="<?php echo $this->url('deduction',array('action'=>'add'));?>">Add new tax deduction</a>
+</p>
+
+<table class="table">
+  <tr>
+    <th>Deduction Name</th>
+    <th>Deduction Percentage</th>
+    <th>Deduction Fixed Amount</th>
+    <th>Periodic Deduction</th>
+    <th>&nbsp;</th>
+  </tr>
+  <?php foreach ($deductions as $deduction) :
+    if (!($deduction->deductionPercentage)){
+      $deduction->deductionPercentage = "N/A";
+    }
+
+    if (!$deduction->fixedAmount){
+      $deduction->fixedAmount = "N/A";
+    }
+    ?>
+
+  <tr>
+    <td><?php echo $this->escapeHtml($deduction->deductionName);?></td>
+
+    <td><?php
+    if($deduction->deductionPercentage != "N/A"){
+      echo $this->escapeHtml(rtrim(rtrim($deduction->deductionPercentage,"0"),".")).'%';
+    }
+    else {
+      echo $this->escapeHtml($deduction->deductionPercentage);
+    }
+    ?>
+    </td>
+
+
+    <td><?php
+    if($deduction->fixedAmount != "N/A"){
+      echo "$".$this->escapeHtml($deduction->fixedAmount);
+    }
+    else {
+      echo $this->escapeHtml($deduction->fixedAmount);
+    }
+    ?>
+    </td>
+
+    <td><?php
+    if($deduction->periodicDeduction == 1){
+      echo 'Yes';
+    }
+    else {
+      echo 'No';
+    }
+    ?>
+    </td>
+
+    <td>
+      <a class="btn btn-primary" href="<?php echo $this->url('deduction',array('action' => 'edit','id' => $deduction->deductionId));?>">Edit</a>
+      <a class="btn btn-danger" href="<?php echo $this->url('deduction',array('action' => 'delete','id' => $deduction->deductionId));?>">Delete</a>
+    </td>
+  </tr>
+<?php endforeach; ?>
+</table>

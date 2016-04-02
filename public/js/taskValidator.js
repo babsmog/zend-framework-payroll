@@ -1,4 +1,4 @@
-var isValid = false;
+var isValid = true;
 
 
 function taskValidator(element){

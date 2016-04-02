@@ -92,20 +92,25 @@ class WorkDone implements InputFilterAwareInterface
           array('name' => 'StripTags'),
           array('name' => 'StringTrim'),
         ),
+        'validators' => array(
+          array(
+            'name' => 'Date',
+            'options' => array(
+            )
+          ),
+
+        ),
       ));
 
       $inputFilter->add(array(
         'name' => 'hrs_worked',
         'required' => true,
-        'filters' => array(
-          array('name' => 'StripTags'),
-          array('name' => 'StringTrim'),
-        ),
         'validators' => array(
           array(
             'name' => 'Regex',
             'options' => array(
               'pattern' => '/^[0-9]+(.[0-9]+|[0-9]*)$/',
+              'setMessage' => 'Should be a valid decimal value.',
             ),
           ),
 

@@ -25,6 +25,12 @@ use Payroll\Model\WorkDoneTable;
 use Payroll\Model\Pay;
 use Payroll\Model\PayTable;
 
+use Payroll\Model\Deduction;
+use Payroll\Model\DeductionTable;
+
+use Payroll\Model\PayDeduction;
+use Payroll\Model\PayDeductionTable;
+
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
@@ -158,6 +164,30 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
           $resultSetPrototype = new ResultSet();
           $resultSetPrototype->setArrayObjectPrototype(new Pay());
           return new TableGateway('pay',$dbAdapter, null, $resultSetPrototype);
+        },
+
+        'Payroll\Model\DeductionTable' => function($sm) {
+          $tableGateway = $sm->get('DeductionTableGateway');
+          $table = new  DeductionTable($tableGateway);
+          return $table;
+        },
+        'DeductionTableGateway' => function($sm) {
+          $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+          $resultSetPrototype = new ResultSet();
+          $resultSetPrototype->setArrayObjectPrototype(new Deduction());
+          return new TableGateway('deduction',$dbAdapter, null, $resultSetPrototype);
+        },
+
+        'Payroll\Model\PayDeductionTable' => function($sm) {
+          $tableGateway = $sm->get('PayDeductionTableGateway');
+          $table = new  PayDeductionTable($tableGateway);
+          return $table;
+        },
+        'PayDeductionTableGateway' => function($sm) {
+          $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+          $resultSetPrototype = new ResultSet();
+          $resultSetPrototype->setArrayObjectPrototype(new PayDeduction());
+          return new TableGateway('pay_deduction',$dbAdapter, null, $resultSetPrototype);
         },
 
       ),

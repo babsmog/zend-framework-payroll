@@ -13,6 +13,7 @@ $form->setAttribute('action',$this->url('personnel-task',
     'id' => $this->id,
   )
 ));
+$form->setAttribute('onsubmit','return isFormValid()');
 $form->prepare();
 
 echo $this->form()->openTag($form);

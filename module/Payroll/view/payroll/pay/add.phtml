@@ -1,0 +1,39 @@
+<?php
+
+$title = 'Add a non-periodic deduction to this pay check';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>
+
+</p>
+<?php
+$url = $this->url('pay',array(
+  'action' => 'add',
+  'id' => $this->id,
+));
+?>
+
+<form action="<?php echo $url; ?>" method="post">
+  <div>
+    <input type="hidden" name="id" value="<?php echo (int) $id; ?>" />
+
+    <label>Select the deduction to add to this employee's pay?</label>
+    <select class="form-control" name="periodic_deduction" style="max-width:300px;">
+      <?php
+      foreach ($deductions as $deduction):
+        ?>
+        <option value=<?php echo $this->escapeHtml($deduction->deductionId)?>><?php echo $this->escapeHtml($deduction->deductionName)?></option>
+        <?php
+      endforeach;
+      ?>
+    </select>
+    <br/>
+    <label>How long should this deduction apply?<br/>
+      [unit is in periods. So a value of 2 would apply this deduction for 2 periods this the last period and this one.]
+    <input type="number" name="duration" class="form-control" style="max-width:200px;" />
+    <br/>
+    <input type="submit" class="btn btn-default" name="submitButton" value="Add" />
+  </div>
+</form>

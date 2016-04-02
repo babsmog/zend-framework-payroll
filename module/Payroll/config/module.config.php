@@ -15,6 +15,7 @@ return array(
       'Payroll\Controller\PersonnelTask' => 'Payroll\Controller\PersonnelTaskController',
       'Payroll\Controller\WorkDone' => 'Payroll\Controller\WorkDoneController',
       'Payroll\Controller\Pay' => 'Payroll\Controller\PayController',
+      'Payroll\Controller\Deduction' => 'Payroll\Controller\DeductionController',
     ),
   ),
 
@@ -109,6 +110,21 @@ return array(
                        ),
                    ),
                ),
+
+               'deduction' => array(
+                   'type'    => 'segment',
+                   'options' => array(
+                       'route'    => '/deduction[/:action][/:id]',
+                       'constraints' => array(
+                           'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                           'id'     => '[0-9]+',
+                       ),
+                       'defaults' => array(
+                           'controller' => 'Payroll\Controller\Deduction',
+                           'action'     => 'index',
+                        ),
+                    ),
+                ),
 
      ),
  ),
