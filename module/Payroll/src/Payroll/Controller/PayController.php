@@ -13,6 +13,7 @@ class PayController extends AbstractActionController
   protected $personnelTable;
   protected $deductionTable;
   protected $payDeductionTable;
+  protected $payDetailsTable;
 
   /*
   Corresponds to the index of the route.
@@ -54,6 +55,7 @@ class PayController extends AbstractActionController
 
     try {
       $pay = $this->getPayTable()->getPay($id);
+      $payDetails = $this->getPayDetailsTable()->getPayDetails($id);
     }
     catch (\Exception $ex) {
       return $this->redirect()->toRoute('pay',array(
@@ -61,17 +63,11 @@ class PayController extends AbstractActionController
       ));
     }
 
-    $buffer = "";
-    $viewablePayslipFile = fopen('./payslips/personnel_'.$pay->personnelId.'_period_'.$pay->period.'_'.$pay->year.'.dat','r');
-    if ($viewablePayslipFile) {
-      $buffer = fread($viewablePayslipFile,filesize('./payslips/personnel_'.$pay->personnelId.'_period_'.$pay->period.'_'.$pay->year.'.dat'));
-      fclose($viewablePayslipFile);
-    }
-
     /* Pass these key value pairings as identifiers into the edit view. */
     return array(
       'id' => $id,
-      'buffer' => $buffer,
+      'payDetails' => $payDetails,
+      'getPersonnelTable' => $this->getPersonnelTable(),
     );
   }
 
@@ -87,17 +83,40 @@ class PayController extends AbstractActionController
     /* If request method is POST and 'del' is Yes delete row from database table. */
     if ($request->isPost()) {
       // process stuff
-      $id = $request->getPost('id');
+      $id = (int) $request->getPost('id');
       $pay = $this->getPayTable()->getPay($id);
-      $personnelId = $pay->personnelId;
-      $deductionId = $request->getPost('periodic_deduction');
-      $duration = $request->getPost('duration');
+      $payDetails = $this->getPayDetailsTable()->getPayDetails($id);
+      $personnelId = (int) $pay->personnelId;
+      $deductionId = (int)$request->getPost('periodic_deduction');
+      $duration = (int) $request->getPost('duration');
 
       if (!$deductionId) {
-        return $this->redirect()->toRoute('pay');
+        return $this->redirect()->toRoute('pay',array(
+          'action' => 'add',
+          'id' => $id,
+        ));
       }
+
+
+      if ($deductionId<1) {
+        return $this->redirect()->toRoute('pay',array(
+          'action' => 'add',
+          'id' => $id,
+        ));
+      }
+
       if (!$duration){
-        $duration = 1;
+        return $this->redirect()->toRoute('pay',array(
+          'action' => 'add',
+          'id' => $id,
+        ));
+      }
+
+      if ($duration<1) {
+        return $this->redirect()->toRoute('pay',array(
+          'action' => 'add',
+          'id' => $id,
+        ));
       }
 
       try{
@@ -110,21 +129,33 @@ class PayController extends AbstractActionController
         $payDeduction->deductionId = $deductionId;
       }
 
+      $payDetails->personnelId = $pay->personnelId;
+      $payDetails->period = $pay->period;
+      $payDetails->year = $pay->year;
+
+
+
       $payDeduction->duration = $duration - 1;
       $this->getPayDeductionTable()->savePayDeduction($payDeduction);
       $deduction = $this->getDeductionTable()->getDeduction($deductionId);
-      $viewablePayslipFile = fopen('./payslips/personnel_'.$pay->personnelId .'_period_'.$pay->period.'_'.$pay->year.'.dat','a');
+      //$viewablePayslipFile = fopen($filename,'w');
       if ($deduction->fixedAmount) {
         $pay->netAmount -= $deduction->fixedAmount;
-        fwrite($viewablePayslipFile,$deduction->deductionName.' $'.$deduction->fixedAmount.',');
+        $payDetails->netAmount = $pay->netAmount;
+        $payDetails->appliedDeductions .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
       }
       else {
         $pay->netAmount -= ($pay->grossAmount * ($deduction->deductionPercentage/100.00));
-        fwrite($viewablePayslipFile,$deduction->deductionName.' '.$deduction->deductionPercentage.'%,');
+        $payDetails->netAmount = $pay->netAmount;
+        $payDetails->appliedDeductions .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
       }
-      $this->getPayTable()->savePay($pay);
 
-      fclose($viewablePayslipFile);
+      $this->getPayTable()->savePay($pay);
+      $this->getPayDetailsTable()->savePayDetails($payDetails);
+      //fclose($viewablePayslipFile);
+
+
+
       return $this->redirect()->toRoute('pay');
     }
 
@@ -220,6 +251,20 @@ class PayController extends AbstractActionController
       $this->payDeductionTable = $sm->get('Payroll\Model\PayDeductionTable');
     }
     return $this->payDeductionTable;
+  }
+
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
+  public function getPayDetailsTable()
+  {
+    if (!$this->payDetailsTable) {
+      $sm = $this->getServiceLocator();
+      $this->payDetailsTable = $sm->get('Payroll\Model\PayDetailsTable');
+    }
+    return $this->payDetailsTable;
   }
 
 }

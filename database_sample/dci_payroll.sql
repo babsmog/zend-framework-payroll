@@ -86,6 +86,20 @@ create table if not exists Pay_Deduction(
   foreign key(personnel_id) references Personnel(personnel_id) on delete cascade on update cascade
 );
 
+create table if not exists Pay_Details(
+  pay_details_id int unsigned not null,
+  personnel_id int unsigned not null,
+  gross_amount decimal(9,2) not null,
+  net_amount decimal(9,2) not null,
+  period int unsigned not null,
+  year int unsigned not null,
+  description_of_work text not null,
+  applied_deductions text not null,
+  primary key(pay_details_id),
+  foreign key(pay_details_id) references Pay(pay_id) on delete cascade on update cascade,
+  foreign key(personnel_id) references Personnel(personnel_id) on delete cascade on update cascade
+);
+
 
 insert into address (street_name,community,parish)
   values ('1/2 No Head Lane','Trench Town','Kingston');

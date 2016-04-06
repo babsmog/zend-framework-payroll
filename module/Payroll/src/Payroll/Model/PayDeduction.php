@@ -2,6 +2,10 @@
 
 namespace Payroll\Model;
 
+use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterAwareInterface;
+use Zend\InputFilter\InputFilterInterface;
+
 /*
 This class represent the blueprint for each payDeduction object in our application.
 It outlines the properties associated with a payDeduction as well as an input filter
@@ -26,5 +30,50 @@ class PayDeduction
     $this->personnelId = (!empty($data['personnel_id'])) ? $data['personnel_id'] : null;
     $this->duration = (!empty($data['duration'])) ? $data['duration'] : null;
   }
+/*
+  public function setInputFilter(InputFilterInterface $inputFilter)
+  {
+    throw new \Exception("Not used");
+  }
+
+  public function getInputFilter()
+  {
+    if (!$this->inputFilter) {
+      $inputFilter = new InputFilter();
+
+      $inputFilter->add(array(
+        'name' => 'pay_deduction_id',
+        'required' => true,
+        'filters' => array(
+          array('name' => 'Int'),
+        ),
+      ));
+
+      $inputFilter->add(array(
+        'name' => 'duration',
+        'required' => true,
+        'filters' => array(
+          array('name' => 'Int'),
+        ),
+        'validators' => array(
+          array(
+            'name' => 'Digits',
+          ),
+
+          array(
+            'name' => 'GreaterThan',
+            'options' => array(
+              'min' => 1,
+              'inclusive' => true,
+            ),
+          ),
+
+        )
+      ));
+
+      $this->inputFilter = $inputFilter;
+    }
+    return $this->inputFilter;
+  }*/
 
 }

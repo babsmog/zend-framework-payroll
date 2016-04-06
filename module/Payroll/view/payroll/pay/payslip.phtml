@@ -4,21 +4,20 @@ $title = 'Payslip';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<?php $info = explode(",",$buffer); ?>
-<p>Name:<?php echo $info[0]; ?></p>
-<p>Gross Pay:<?php echo $info[1]; ?></p>
-<p>Net Pay:<?php echo $info[2]; ?></p>
-<p>Period:<?php echo $info[3]; ?></p>
-<p>Year:<?php echo $info[4]; ?></p>
+<p>Name:<?php $personnel = $getPersonnelTable->getPersonnel($payDetails->personnelId); echo $personnel->fName.' '.$personnel->lName; ?></p>
+<p>Gross Pay:$<?php echo $payDetails->grossAmount; ?></p>
+<p>Net Pay:$<?php echo $payDetails->netAmount; ?></p>
+<p>Period:<?php echo $payDetails->period; ?></p>
+<p>Year:<?php echo $payDetails->year; ?></p>
 <hr/>
 <p style="text-decoration:underline;">Deductions</p>
 <?php
-  for ($i=5;$i<sizeof($info);$i++)
-  {
+  $deductions = explode(",",$payDetails->appliedDeductions);
+  foreach ($deductions as $deduction):
     ?>
     <p>
-      <?php echo $info[$i]; ?>
+      <?php echo $deduction; ?>
     </p>
     <?php
-  }
+  endforeach;
  ?>

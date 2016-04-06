@@ -31,6 +31,7 @@ class PayTable
     return $resultSet;
   }
 
+
   /*
   Retrieves the record from the entity table with the specified id passed
   as parameter. If a record with the specified id cannot be found
@@ -43,6 +44,19 @@ class PayTable
     $row = $rowset->current();
     if (!$row) {
       throw new \Exception("Could not find row $id");
+    }
+    return $row;
+  }
+
+
+  public function getPay2($personnelId,$period,$year)
+  {
+    $rowset = $this->tableGateway->select(array('personnel_id' => $personnelId,
+    'period' => $period,
+    'year' => $year));
+    $row = $rowset->current();
+    if (!$row) {
+      throw new \Exception("Could not find row");
     }
     return $row;
   }

@@ -31,6 +31,16 @@ class PersonnelTaskTable
   }
 
   /*
+  Gets all the records from the entity table.
+  and return it as a resultSet.
+  */
+  public function fetchAll2($personnelId)
+  {
+    $resultSet = $this->tableGateway->select(array('personnel_id' => $personnelId));
+    return $resultSet;
+  }
+
+  /*
   Retrieves the record from the entity table with the specified id passed
   as parameter. If a record with the specified id cannot be found
   an Exception is thrown.

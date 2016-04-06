@@ -12,8 +12,11 @@ Screens of the Application
 ----------------------------
 
 ![Alt text](/screens/screenshot-1.png?raw=true "Home Page")
-
+-----------------------------------------------------------
 ![Alt text](/screens/screenshot-2.png?raw=true "Personnel Page")
+----------------------------------------------------------------
+![Alt text](/screens/screenshot-3.png?raw=true "Deduction Page")
+----------------------------------------------------------------
 
 SetUp
 -----
@@ -38,7 +41,7 @@ Uncomment the return statement and add:
             'password' => <database password>,
         )
     );
-    
+
 Other database settings can be found in global.php.
 
 Web server setup

@@ -17,7 +17,7 @@ class Pay
   public $payId;
   public $personnelId;
   public $grossAmount;
-  public $netGross;
+  public $netAmount;
   public $period;
   public $year;
   protected $inputFilter;

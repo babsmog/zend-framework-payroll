@@ -32,7 +32,7 @@ $url = $this->url('pay',array(
     <br/>
     <label>How long should this deduction apply?<br/>
       [unit is in periods. So a value of 2 would apply this deduction for 2 periods this the last period and this one.]
-    <input type="number" name="duration" class="form-control" style="max-width:200px;" />
+    <input type="number" name="duration" min=1 class="form-control" style="max-width:200px;" />
     <br/>
     <input type="submit" class="btn btn-default" name="submitButton" value="Add" />
   </div>

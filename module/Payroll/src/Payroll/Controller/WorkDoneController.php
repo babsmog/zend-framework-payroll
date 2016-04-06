@@ -7,7 +7,7 @@ use Zend\View\Model\ViewModel;
 use Payroll\Model\WorkDone;
 use Payroll\Form\WorkDoneForm;
 use Payroll\Model\Pay;
-use Zend\Validator\Date;
+use Payroll\Model\PayDetails;
 
 class WorkDoneController extends AbstractActionController
 {
@@ -19,6 +19,7 @@ class WorkDoneController extends AbstractActionController
   protected $payTable;
   protected $deductionTable;
   protected $payDeductionTable;
+  protected $payDetailsTable;
 
   /*
   Corresponds to the index of the route.
@@ -265,15 +266,18 @@ class WorkDoneController extends AbstractActionController
     $deductions = $this->getDeductionTable()->fetchAll2(1); //Get the periodic taxes and deductions that are applied to all employees every period
     $deductionPercentagesTotal = 0.0;
     $deductionFixedAmountTotal = 0.0;
-    $fileContent = "";
+    $payDetails = new PayDetails();
+    $payDetails->descriptionOfWork = "";
+    $payDetails->appliedDeductions = "";
+
     foreach ($deductions as $deduction):
       if ($deduction->fixedAmount){
         $deductionFixedAmountTotal += $deduction->fixedAmount;
-        $fileContent .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
+        $payDetails->appliedDeductions .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
       }
       else {
         $deductionPercentagesTotal += $deduction->deductionPercentage;
-        $fileContent .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
+        $payDetails->appliedDeductions .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
       }
     endforeach;
 
@@ -300,25 +304,42 @@ class WorkDoneController extends AbstractActionController
           }
           if ($deduction->deductionPercentage){
             $otherDeductionsTotal += ($pays[$id]*($deduction->deductionPercentage/100.00));
-            $fileContent .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
+            $payDetails->appliedDeductions .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
           }
           else {
             $otherDeductionsTotal += $deduction->fixedAmount;
-            $fileContent .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
+            $payDetails->appliedDeductions .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
           }
         endforeach;
+      endforeach;
+
+
+      $personnelTasks = $this->getPersonnelTaskTable()->fetchAll2($payCheck->personnelId);
+      foreach ($personnelTasks as $personnelTask):
+        $task = $this->getTaskTable()->getTask($personnelTask->taskId);
+        $payDetails->descriptionOfWork .= $task->taskName.",";
       endforeach;
 
       $payCheck->grossAmount = $pays[$id];
       $payCheck->netAmount = $pays[$id] - ($deductionFixedAmountTotal+($pays[$id]*($deductionPercentagesTotal/100.00))+$otherDeductionsTotal);
       $payCheck->period = $lastPeriod;
       $payCheck->year = $year;
-      $fileContent =   $personnel->fName.' '.$personnel->lName.','.$payCheck->grossAmount.','.$payCheck->netAmount.','.$payCheck->period.','
-      .$payCheck->year.','.$fileContent;
+
+      $payDetails->personnelId = $payCheck->personnelId;
+      $payDetails->grossAmount = $payCheck->grossAmount;
+      $payDetails->netAmount = $payCheck->netAmount;
+      $payDetails->period = $payCheck->period;
+      $payDetails->year = $payCheck->year;
+
       $this->getPayTable()->savePay($payCheck);
-      $viewablePayslipFile = fopen('./payslips/personnel_'.$id.'_period_'.$payCheck->period.'_'.$year.'.dat','w');
-      fwrite($viewablePayslipFile,$fileContent);
-      fclose($viewablePayslipFile);
+      $savedPay = $this->getPayTable()->getPay2($payCheck->personnelId,$payCheck->period,$payCheck->year);
+      $payDetails->payDetailsId = (int) $savedPay->payId;
+      if ($payDetails->payDetailsId > 0) {
+        $this->getPayDetailsTable()->createPayDetails($payDetails);
+      }
+      else {
+        throw new \Exception('PayDetails id is null');
+      }
 
     endforeach;
 
@@ -435,6 +456,20 @@ class WorkDoneController extends AbstractActionController
       $this->payDeductionTable = $sm->get('Payroll\Model\PayDeductionTable');
     }
     return $this->payDeductionTable;
+  }
+
+  /*
+  This method uses the services manager to get an instance of a Table object to
+  access data in the database. This instance can be used throughout the Controller
+  without creating new instances.
+  */
+  public function getPayDetailsTable()
+  {
+    if (!$this->payDetailsTable) {
+      $sm = $this->getServiceLocator();
+      $this->payDetailsTable = $sm->get('Payroll\Model\PayDetailsTable');
+    }
+    return $this->payDetailsTable;
   }
 
 }
