@@ -273,13 +273,14 @@ class WorkDoneController extends AbstractActionController
     foreach ($deductions as $deduction):
       if ($deduction->fixedAmount){
         $deductionFixedAmountTotal += $deduction->fixedAmount;
-        $payDetails->appliedDeductions .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
+        $payDetails->appliedDeductions .= $deduction->deductionName.'@$'.$deduction->fixedAmount.',';
       }
       else {
         $deductionPercentagesTotal += $deduction->deductionPercentage;
-        $payDetails->appliedDeductions .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
+        $payDetails->appliedDeductions .= $deduction->deductionName.'@'.$deduction->deductionPercentage.'%,';
       }
     endforeach;
+    $payDetails->appliedDeductions = rtrim($payDetails->appliedDeductions,",");
 
 
     $otherDeductions = $this->getDeductionTable()->fetchAll2(0);
@@ -304,14 +305,15 @@ class WorkDoneController extends AbstractActionController
           }
           if ($deduction->deductionPercentage){
             $otherDeductionsTotal += ($pays[$id]*($deduction->deductionPercentage/100.00));
-            $payDetails->appliedDeductions .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
+            $payDetails->appliedDeductions .= ','.$deduction->deductionName.'@'.$deduction->deductionPercentage.'%,';
           }
           else {
             $otherDeductionsTotal += $deduction->fixedAmount;
-            $payDetails->appliedDeductions .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
+            $payDetails->appliedDeductions .= ','. $deduction->deductionName.'@$'.$deduction->fixedAmount.',';
           }
         endforeach;
       endforeach;
+      $payDetails->appliedDeductions = rtrim($payDetails->appliedDeductions,",");
 
 
       $personnelTasks = $this->getPersonnelTaskTable()->fetchAll2($payCheck->personnelId);
@@ -319,6 +321,7 @@ class WorkDoneController extends AbstractActionController
         $task = $this->getTaskTable()->getTask($personnelTask->taskId);
         $payDetails->descriptionOfWork .= $task->taskName.",";
       endforeach;
+      $payDetails->descriptionOfWork = rtrim($payDetails->descriptionOfWork,",");
 
       $payCheck->grossAmount = $pays[$id];
       $payCheck->netAmount = $pays[$id] - ($deductionFixedAmountTotal+($pays[$id]*($deductionPercentagesTotal/100.00))+$otherDeductionsTotal);

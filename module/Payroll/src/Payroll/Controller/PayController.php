@@ -65,7 +65,6 @@ class PayController extends AbstractActionController
 
     /* Pass these key value pairings as identifiers into the edit view. */
     return array(
-      'id' => $id,
       'payDetails' => $payDetails,
       'getPersonnelTable' => $this->getPersonnelTable(),
     );
@@ -142,13 +141,14 @@ class PayController extends AbstractActionController
       if ($deduction->fixedAmount) {
         $pay->netAmount -= $deduction->fixedAmount;
         $payDetails->netAmount = $pay->netAmount;
-        $payDetails->appliedDeductions .= $deduction->deductionName.' $'.$deduction->fixedAmount.',';
+        $payDetails->appliedDeductions .= ','.$deduction->deductionName.'@$'.$deduction->fixedAmount.',';
       }
       else {
         $pay->netAmount -= ($pay->grossAmount * ($deduction->deductionPercentage/100.00));
         $payDetails->netAmount = $pay->netAmount;
-        $payDetails->appliedDeductions .= $deduction->deductionName.' '.$deduction->deductionPercentage.'%,';
+        $payDetails->appliedDeductions .= ','.$deduction->deductionName.'@'.$deduction->deductionPercentage.'%,';
       }
+      $payDetails->appliedDeductions = rtrim($payDetails->appliedDeductions,",");
 
       $this->getPayTable()->savePay($pay);
       $this->getPayDetailsTable()->savePayDetails($payDetails);

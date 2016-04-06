@@ -1,23 +1,56 @@
 <?php
 
-$title = 'Payslip';
+$title = 'Pay Details';
 $this->headTitle($title);
 ?>
+
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>Name:<?php $personnel = $getPersonnelTable->getPersonnel($payDetails->personnelId); echo $personnel->fName.' '.$personnel->lName; ?></p>
-<p>Gross Pay:$<?php echo $payDetails->grossAmount; ?></p>
-<p>Net Pay:$<?php echo $payDetails->netAmount; ?></p>
-<p>Period:<?php echo $payDetails->period; ?></p>
-<p>Year:<?php echo $payDetails->year; ?></p>
-<hr/>
-<p style="text-decoration:underline;">Deductions</p>
+
+<table class="table table-responsive table-striped table-hover">
+  <tr>
+    <th style="text-align:right;" colspan="4">Period:<?php echo $payDetails->period;echo "    Year:". $payDetails->year; ?></th>
+  </tr>
+  <tr>
+    <th style="text-align:center;background-color:#66b514;color:#fff" colspan="4">Payslip</th>
+  </tr>
+  <tr>
+    <th>Name</th>
+    <th>Description of work</th>
+    <th>Gross Pay</th>
+    <th>Net Pay</th>
+  </tr>
+  <tr>
+    <td><?php $personnel = $getPersonnelTable->getPersonnel($payDetails->personnelId); echo $personnel->fName.' '.$personnel->lName; ?></td>
+    <td><?php echo $payDetails->descriptionOfWork; ?></td>
+    <td><?php echo $payDetails->grossAmount; ?></td>
+    <td><?php echo $payDetails->netAmount; ?></td>
+  </tr>
+</table>
+
+
+<table class="table table-responsive table-hover">
+  <tr>
+    <th colspan="2" style="text-align:center;background-color:#66b514;color:#fff;">Deductions</th>
+  </tr>
+  <tr>
+    <th>Name</th>
+    <th>Amount</th>
+  </tr>
 <?php
   $deductions = explode(",",$payDetails->appliedDeductions);
   foreach ($deductions as $deduction):
+    $infoPieces = explode("@",$deduction);
     ?>
-    <p>
-      <?php echo $deduction; ?>
-    </p>
+    <tr>
+      <?php
+      foreach ($infoPieces as $infoPiece):
+        ?>
+        <td><?php echo $infoPiece; ?></td>
+      <?php
+      endforeach;
+      ?>
+    </tr>
     <?php
   endforeach;
  ?>
+ </table>

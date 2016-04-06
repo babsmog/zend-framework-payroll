@@ -31,7 +31,7 @@ class PayDetails
     $this->netAmount = (isset($data['net_amount'])) ? $data['net_amount'] : null;
     $this->period = (isset($data['period'])) ? $data['period'] : null;
     $this->year = (isset($data['year'])) ? $data['year'] : null;
-    $this->descriptionOfWork = (isset($data['description_of_work_done'])) ? $data['description_of_work_done'] : null;
+    $this->descriptionOfWork = (isset($data['description_of_work'])) ? $data['description_of_work'] : null;
     $this->appliedDeductions = (isset($data['applied_deductions'])) ? $data['applied_deductions'] : null;
   }
 }
